@@ -11,36 +11,6 @@ def print_output(matches):
         print(val, key)
 
 
-'''
-    Here is the algorithm:
-• Every hospital ranks the resident candidates in order of preference.
-• Similarly, every resident candidate ranks the hospital in order of preference.
-• Each resident applies to the hospital it prefers most.
-• Then, each hospital considers all the applicants they have received, and
-replies “maybe” to the resident they like best (of the ones that applied to that hospital) and “no” to all the rest. Thus, the resident is now tentatively matched to that hospital.
-• As long as there are unmatched residents, each unmatched resident applies to the most-preferred hospital to which they have not yet applied, regardless of whether or not that hospital is tentatively matched.
-• Each hopsital reviews the new offers, and either:
-– replies “maybe” if it is not yet tentatively matched or if it prefer
-this resident to the one it was previously matched to (if it rejects its previously-matched resident, that resident becomes unmatched)
-1
-– or replies “no” if it is tentatively matched and it prefers the existing match to the new applicant
-
-
-def StableMatching(S, R)
-  let M = {}
-  for s \in S:
-    set s to free
-  for r \in R:
-    set r to free
-  while some student s \in S is free and has not proposed to every residency:
-    let r = first residency in s's list to which they have not proposed
-    if r is free:
-      add (s,r) to M
-    else if r prefers s to its current student s'
-      remove (s',r) from M
-      add (s,r) to M
-
-'''
 def stable_matching(resident_preferences, hospital_preferences):
     '''
         Invariant: For every Hospital H and resident R, H will be matched with
@@ -112,13 +82,12 @@ def parser(resident_preferences, hospital_prefences, size):
     try:
         with open(sys.argv[1], 'r') as file_input:
             file_input.readline()
-            #Invariant: i will always be less than the size of matches
+
             for i in range(size):
                 line = file_input.readline().strip()
                 entry = line.split(" ")
                 resident_preferences[entry[0]] = list(entry[1:])
 
-            #Invariant: i will always be less than the size of matches
             for i in range(size):
                 line = file_input.readline().strip()
                 entry = line.split(" ")
