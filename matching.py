@@ -46,7 +46,7 @@ def stable_matching(resident_preferences, hospital_preferences):
 
     #for hospital in hospitals:
         #set each hospitals' match to free (still needs a match)
-    hos_proposals = {hos: None for hos in hospital_preferences}
+    matching_dict = {hos: None for hos in hospital_preferences}
     
     #for each resident in residents:
         #set each residents' match to free (still need a match)
@@ -54,16 +54,27 @@ def stable_matching(resident_preferences, hospital_preferences):
     
     #while some resident in the list of Residents is not free and has not proposed to every hospital:
     while None in res_proposals.values():
-        pass
         #let current_hospital = the first residency in the residents' list which they haven't proposed
+        for resident, hospital in res_proposals.items():
+            if(hospital == None):
+                hospital = resident_preferences[resident].pop(0)
+                res_proposals[resident] = hospital
+                #if current_hospital is free:
+                    #add the pair (resident, current_hospital) to M
+                if(matching_dict[hospital] == None):
+                    matching_dict[hospital] = resident
 
-        #if current_hospital is free:
-            #add the pair (resident, current_hospital) to M
-        #else if current_hospital prefers the new resident to its current resident
-            #remove the current pair(resident', current_hospital)
-            #add (resident, current_hospital)
-    pass 
-
+                
+                #else if current_hospital prefers the new resident to its current resident
+                    #remove the current pair(resident', current_hospital)
+                    #add (resident, current_hospital)
+                else:
+                    curr_res = matching_dict[hospital]
+                    if(hospital_preferences[hospital].index(curr_res) > hospital_preferences[hospital].index(resident)):
+                        res_proposals[curr_res] = None
+                        matching_dict[hospital] = resident
+    
+    return matching_dict
 
 
 
@@ -86,15 +97,14 @@ def parser(resident_preferences, hospital_prefences, size):
         with open(sys.argv[1], 'r') as file_input:
             file_input.readline()
             for i in range(size):
-                line = file_input.readline()
+                line = file_input.readline().strip()
                 entry = line.split(" ")
                 resident_preferences[entry[0]] = list(entry[1:])
          
             for i in range(size):
-                line = file_input.readline()
+                line = file_input.readline().strip()
                 entry = line.split(" ")
-                hospital_prefences[entry[0]] = list(entry[0:])
-
+                hospital_prefences[entry[0]] = list(entry[1:])
 
     except FileNotFoundError:
         sys.exit(1)
@@ -112,9 +122,11 @@ def main():
     except IOError:
         sys.exit(1)
 
-    #stable_matching(resident_preferences, hospital_preferences)
+    matches = stable_matching(resident_preferences, hospital_preferences)
 
-    #print_output()
+    for key, val in matches.items():
+        print(key, val)
+        print()
 
 if __name__ == "__main__":
     main()
