@@ -42,6 +42,18 @@ def StableMatching(S, R)
 
 '''
 def stable_matching(resident_preferences, hospital_preferences):
+    '''
+        Invariant: For every Hospital H and resident R, H will be matched with
+                   there favorited R that have proposed to them at each round.
+
+        Initialization: Every hospital has no proposals. 
+
+        Maintenence: If Hospital h is not matched with any proposed resident R or
+                     H prefers R over their current R', 
+                     there will always be (n - 2) total residents and hospitals left to make a match.
+
+        Termination: Every hospital H has been proposed to. 
+    '''
     #let M be the empty set of matches
     matching_dict = dict()
 
@@ -54,7 +66,7 @@ def stable_matching(resident_preferences, hospital_preferences):
     res_proposals = {res: None for res in resident_preferences}
     
     #while some resident in the list of Residents is not free and has not proposed to every hospital:
-    while None in res_proposals.values() or None in matching_dict.items():
+    while None in res_proposals.values():
         for resident, hospital in res_proposals.items():
             #let current_hospital = the first residency in the residents' list which they haven't proposed
             if(hospital == None):
@@ -100,11 +112,13 @@ def parser(resident_preferences, hospital_prefences, size):
     try:
         with open(sys.argv[1], 'r') as file_input:
             file_input.readline()
+            #Invariant: i will always be less than the size of matches
             for i in range(size):
                 line = file_input.readline().strip()
                 entry = line.split(" ")
                 resident_preferences[entry[0]] = list(entry[1:])
-         
+
+            #Invariant: i will always be less than the size of matches
             for i in range(size):
                 line = file_input.readline().strip()
                 entry = line.split(" ")
