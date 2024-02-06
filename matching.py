@@ -51,9 +51,9 @@ def stable_matching(resident_preferences, hospital_preferences):
                     matching_dict[hospital] = resident
                     res_proposals[resident] = hospital
 
-                    #else if current_hospital prefers the new resident to its current resident
-                        #remove the current pair(resident', current_hospital)
-                        #add (resident, current_hospital)
+                #else if current_hospital prefers the new resident to its current resident
+                    #remove the current pair(resident', current_hospital)
+                    #add (resident, current_hospital)
                 else:
                     curr_res = matching_dict[hospital]
                     if(hospital_preferences[hospital].index(curr_res) > hospital_preferences[hospital].index(resident)):
@@ -62,7 +62,6 @@ def stable_matching(resident_preferences, hospital_preferences):
                         res_proposals[curr_res] = None
 
     return matching_dict
-
 
 
 def getMatchLen():
@@ -77,7 +76,6 @@ def getMatchLen():
 
 
 
-#TODO: Get rid of new line characters
 def parser(resident_preferences, hospital_prefences, size):
     #open the file
     try:
@@ -98,7 +96,6 @@ def parser(resident_preferences, hospital_prefences, size):
         sys.exit(1)
     except IOError:
         sys.exit(1)
-
 
 
 def main():
