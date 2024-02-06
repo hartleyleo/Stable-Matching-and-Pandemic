@@ -1,4 +1,5 @@
 import sys
+from collections import deque
 
 #globals:
 #two dictionaries 
@@ -41,7 +42,7 @@ def stable_matching(resident_preferences, hospital_preferences):
             #let current_hospital = the first residency in the residents' list which they haven't proposed
             if(hospital == None):
 
-                hospital = resident_preferences[resident].pop(0)
+                hospital = resident_preferences[resident].popleft()
 
 
                 #if current_hospital is free:
@@ -86,12 +87,12 @@ def parser(resident_preferences, hospital_prefences, size):
             for i in range(size):
                 line = file_input.readline().strip()
                 entry = line.split(" ")
-                resident_preferences[entry[0]] = list(entry[1:])
+                resident_preferences[entry[0]] = deque(entry[1:])
 
             for i in range(size):
                 line = file_input.readline().strip()
                 entry = line.split(" ")
-                hospital_prefences[entry[0]] = list(entry[1:])
+                hospital_prefences[entry[0]] = deque(entry[1:])
 
     except FileNotFoundError:
         sys.exit(1)
