@@ -1,5 +1,5 @@
 import sys
-from collections import deque
+from collections import deque, defaultdict
 
 #globals:
 #two dictionaries 
@@ -35,6 +35,12 @@ def stable_matching(resident_preferences, hospital_preferences):
     #for each resident in residents:
         #set each residents' match to free (still need a match)
     res_proposals = {res: None for res in resident_preferences}
+
+    #to avoid using .index(), prepocess the ranks of each resident for each hospital
+    hospital_pref_ranks = defaultdict(dict)
+    for hospital, preference in hospital_preferences.items():
+        for rank, resident in enumerate(preference):
+            hospital_pref_ranks[hospital][resident] = rank
     
     #while some resident in the list of Residents is not free and has not proposed to every hospital:
     while None in res_proposals.values():
@@ -56,13 +62,12 @@ def stable_matching(resident_preferences, hospital_preferences):
                     #add (resident, current_hospital)
                 else:
                     curr_res = matching_dict[hospital]
-                    if(hospital_preferences[hospital].index(curr_res) > hospital_preferences[hospital].index(resident)):
+                    if hospital_pref_ranks[hospital][curr_res] > hospital_pref_ranks[hospital][resident]:
                         res_proposals[resident] = hospital
                         matching_dict[hospital] = resident
                         res_proposals[curr_res] = None
 
     return matching_dict
-
 
 def getMatchLen():
     try:
